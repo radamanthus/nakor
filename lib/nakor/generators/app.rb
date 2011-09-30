@@ -37,7 +37,7 @@ module Nakor
       argument :app_name, :type => :string
 
       def self.source_root
-        File.dirname(__FILE__) + "/template_app"
+        File.dirname(__FILE__) + "/corona-game-template"
       end
 
       def create_group

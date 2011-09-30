@@ -1,0 +1,3 @@
+[submodule "lib/nakor/generators/corona-game-template"]
+	path = lib/nakor/generators/corona-game-template
+	url = git@github.com:radamanthus/corona-game-template.git
