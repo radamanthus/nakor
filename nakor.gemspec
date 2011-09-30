@@ -8,8 +8,18 @@ Gem::Specification.new do |s|
   s.authors     = ["Radamanthus Batnag"]
   s.email       = ["rad@batnag.org"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Nakor is a gem that encapsulates the corona-game-template project.}
+  s.description = %q{
+    To create a new Corona SDK game using nakor, just run:
+
+    nakor generate awesome_game
+
+    This will create an awesome_game directory in the current directory, and copy all corona game template files into it.
+
+    To run the generated game, type:
+
+    /Applications/CoronaSDK/simulator awesome_game
+  }
 
   s.rubyforge_project = "nakor"
 
