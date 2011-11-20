@@ -1,15 +1,22 @@
 settings =
 {
-  orientation = 
+  orientation =
   {
     default = "landscapeRight",
-    supported = 
+    supported =
     {
       "landscapeLeft", "landscapeRight",
     },
   },
-   androidPermissions =
-   {
-       "android.permission.INTERNET"
-   },
+  iphone = {
+    plist = {
+      UIStatusBarHidden = false,
+      UIPrerenderedIcon = true, -- set to false for "shine" overlay
+      UIApplicationExitsOnSuspend = true,
+    }
+  },
+  androidPermissions =
+  {
+    "android.permission.INTERNET"
+  },
 }
