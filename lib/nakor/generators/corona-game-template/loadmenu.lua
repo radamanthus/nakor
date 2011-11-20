@@ -5,6 +5,8 @@ local scene = storyboard.newScene()
 -- BEGINNING OF YOUR IMPLEMENTATION
 ---------------------------------------------------------------------------------
 function initializeGame()
+  require 'init_buttons'
+
   math.randomseed( os.time() )
 end
 
