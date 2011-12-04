@@ -1,22 +1,26 @@
-settings =
-{
-  orientation =
-  {
-    default = "landscapeRight",
-    supported =
-    {
-      "landscapeLeft", "landscapeRight",
+settings = {
+  orientation = {
+    default = "portrait",
+    supported = {
+      "portrait"
     },
   },
   iphone = {
     plist = {
       UIStatusBarHidden = false,
-      UIPrerenderedIcon = true, -- set to false for "shine" overlay
       UIApplicationExitsOnSuspend = true,
+      CFBundleIconFile = "Icon.png",
+      CFBundleIconFiles = {
+       "Icon.png",
+       "Icon@2x.png",
+       "Icon-72.png",
+      },
     }
   },
-  androidPermissions =
-  {
-    "android.permission.INTERNET"
+  --[[ For Android:
+  androidPermissions = {
+    "android.permission.INTERNET",
   },
+  ]]--
 }
+
