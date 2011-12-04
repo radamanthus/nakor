@@ -1,7 +1,9 @@
 Corona Game Template version 1.0
 (c) 2011 by Radamanthus Batnag
 
-This is a template project for building games using Ansca Mobile's Corona SDK (http://www.anscamobile.com/corona/)
+This is a template project for building games using Ansca Mobile's Corona SDK (http://www.anscamobile.com/corona/).
+
+This has been tested against Daily Build Version 2011.696 (2011.8.2). It uses the Storyboard API, therefore it will not work with builds that do not have yet the Storyboard API.
 
 USAGE
 Out of the box, this is a working Corona project. It includes a splash screen (loadmenu.lua, displays images/splashScreen.png for 1 second) and the following menu buttons:
