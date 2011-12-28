@@ -45,14 +45,14 @@ module Nakor
       end
 
       def copy_source_files
-        TEMPLATE_FILES.each do |f|
-          template f, "#{app_name}/#{f}"
+        TEMPLATE_FILES.each do |template_file|
+          template f, "#{app_name}/#{template_file}"
         end
       end
 
       def copy_asset_files
-        ASSET_FILES.each do |f|
-          copy_file f, "#{app_name}/#{f}"
+        ASSET_FILES.each do |asset_file|
+          copy_file f, "#{app_name}/#{asset_file}"
         end
       end
 
