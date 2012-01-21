@@ -19,17 +19,21 @@ module Nakor
         about.lua
         build.settings
         config.lua
-        director.lua
         help.lua
         init_buttons.lua
         loadmenu.lua
         main.lua
         menu.lua
+        orm.lua
         play.lua
         radlib.lua
         README
         settings.lua
+        string_ext.lua
+        table_ext.lua
+        time_ext.lua
         ui.lua
+        underscore.lua
       }
 
       include Thor::Actions
