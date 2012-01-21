@@ -21,6 +21,7 @@ module Nakor
         config.lua
         help.lua
         init_buttons.lua
+        io_ext.lua
         loadmenu.lua
         main.lua
         menu.lua
