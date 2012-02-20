@@ -17,6 +17,7 @@ module Nakor
 
       TEMPLATE_FILES = %W{
         about.lua
+        active_record.lua
         build.settings
         config.lua
         help.lua
@@ -25,6 +26,7 @@ module Nakor
         loadmenu.lua
         main.lua
         menu.lua
+        middleclass.lua
         orm.lua
         play.lua
         radlib.lua

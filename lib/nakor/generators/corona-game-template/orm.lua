@@ -9,9 +9,9 @@ local M = {}
 ------------------------------------------------------------------------------
 local initialize = function( dbPath )
   if dbPath ~= nil then
-    db = sqlite3.open( dbPath )
+    _G.db = sqlite3.open( dbPath )
   else
-    db = sqlite3.open_memory()
+    _G.db = sqlite3.open_memory()
   end
   return db
 end
@@ -21,7 +21,7 @@ M.initialize = initialize
 -- Close the database
 ------------------------------------------------------------------------------
 local close = function()
-  db:close()
+  _G.db:close()
 end
 M.close = close
 
@@ -30,7 +30,7 @@ M.close = close
 ------------------------------------------------------------------------------
 local selectAll = function(tableName)
   local result = {}
-  for row in db:nrows("SELECT * FROM " .. tableName) do
+  for row in _G.db:nrows("SELECT * FROM " .. tableName) do
     result[#result+1] = row
   end
   return result
@@ -43,7 +43,7 @@ M.selectAll = selectAll
 ------------------------------------------------------------------------------
 local selectWhere = function(tableName, whereClause)
   local result = {}
-  for row in db:nrows("SELECT * FROM " .. tableName .. " WHERE " .. whereClause) do
+  for row in _G.db:nrows("SELECT * FROM " .. tableName .. " WHERE " .. whereClause) do
     result[#result+1] = row
   end
   return result
@@ -56,10 +56,10 @@ M.selectWhere = selectWhere
 ------------------------------------------------------------------------------
 local selectOne = function(tableName, key, keyValue)
   local result = {}
-  for row in db:nrows(
-		"SELECT * FROM " .. tableName ..
+  local sql = "SELECT * FROM " .. tableName ..
 		" WHERE " .. key .. " = " .. keyValue ..
-		" LIMIT 1") do
+		" LIMIT 1"
+  for row in _G.db:nrows(sql) do
     result[1] = row
     break
   end
@@ -72,7 +72,7 @@ M.selectOne = selectOne
 ------------------------------------------------------------------------------
 local getTableRowCount = function(tableName)
   local rowCount = 0
-  for row in db:nrows("SELECT COUNT(*) as rowcount FROM " .. tableName) do
+  for row in _G.db:nrows("SELECT COUNT(*) as rowcount FROM " .. tableName) do
     rowCount = row.rowcount
   end
   return rowCount
@@ -107,8 +107,7 @@ local insertRow = function( tableName, row )
   local sql = "INSERT INTO " .. tableName .. columnList .. valuesList
 
   -- execute the SQL command for inserting the row
-  print("Running INSERT SQL: " .. sql)
-  db:exec( sql )
+  _G.db:exec( sql )
 end
 M.insertRow = insertRow
 
@@ -134,7 +133,6 @@ local updateRow = function( tableName, recordData )
   updateStr = string.sub( updateStr, 1, #updateStr-1 )
 
   local sql = "UPDATE " .. tableName .. " SET " .. updateStr .. " WHERE id = " .. recordData.id
-  print( "UPDATE SQL: " .. sql )
   db:exec( sql )
 end
 M.updateRow = updateRow
@@ -163,7 +161,6 @@ local updateAttribute = function( tablename, filter, columnName, columnValue )
   local updateStr = "UPDATE " .. tablename ..
     " SET " .. columnName .. " = " .. columnValue ..
     " WHERE " .. filter
-  print("UPDATE SQL: " .. updateStr )
   db:exec( updateStr )
 end
 M.updateAttribute = updateAttribute
@@ -185,7 +182,6 @@ local updateAttributes = function( tablename, filter, columns, columnValues )
       updateStr = updateStr .. ", "
     end
   end
-  print("UPDATE SQL: " .. updateStr)
   db:exec(
     "UPDATE " .. tablename .. " SET " ..
     updateStr ..
