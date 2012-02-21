@@ -32,6 +32,8 @@
 --
 
 require 'middleclass'
+local orm = require 'orm'
+local sql = require 'sql'
 
 ActiveRecord = class('ActiveRecord')
 
@@ -52,6 +54,15 @@ function ActiveRecord.static:count()
 end
 
 ------------------------------------------------------------------------------
+-- Creates the table
+-- TODO: If options.recreate = true, it drops the table if it already exists
+------------------------------------------------------------------------------
+function ActiveRecord.static:createTable(options)
+  local createSql = sql.generateCreateTable(self.tableName, self.tableFields)
+  db:exec( createSql )
+end
+
+------------------------------------------------------------------------------
 -- Returns the record matching the given id. Returns nil if no match is found.
 --
 -- NOTE: Until I figure out how to determine the caller's class,
@@ -66,10 +77,27 @@ function ActiveRecord.static:find(klass, id)
 end
 
 ------------------------------------------------------------------------------
--- Returns all rows in the table.
+-- Returns all rows in the table that match the given filter
 ------------------------------------------------------------------------------
-function ActiveRecord.static:findAll()
-  return orm.selectAll(self.tableName)
+function ActiveRecord.static:findAll( filter, orderBy )
+  local result = nil
+  if filter == nil then
+    result = orm.selectAll( self.tableName, {order = orderBy} )
+  else
+    result = orm.selectWhere( self.tableName, {where = filter, order = orderBy} )
+  end
+  return result
+end
+
+------------------------------------------------------------------------------
+-- Updates all rows in the table that match the given filter
+------------------------------------------------------------------------------
+function ActiveRecord.static:updateAll( updateSql, filter )
+  if filter == nil then
+    orm.updateAll( self.tableName, updateSql )
+  else
+    orm.updateWhere( self.tableName, updateSql, filter )
+  end
 end
 
 ------------------------------------------------------------------------------
@@ -97,7 +125,11 @@ end
 -- Otherwise an INSERT is done.
 ------------------------------------------------------------------------------
 function ActiveRecord:save()
-  print("IMPLEMENTATION PENDING...")
+  local updateTable = {}
+  for k in pairs(self.class.tableFields) do
+    updateTable[k] = self[k]
+  end
+  orm.createOrUpdate( self.class.tableName, updateTable )
 end
 
 ------------------------------------------------------------------------------

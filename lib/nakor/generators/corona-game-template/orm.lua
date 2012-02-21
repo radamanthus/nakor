@@ -1,3 +1,4 @@
+local sql = require 'sql'
 local sqlite3 = require "sqlite3"
 local radlib = require "radlib"
 
@@ -28,9 +29,14 @@ M.close = close
 ------------------------------------------------------------------------------
 -- Return all the contents of an SQLite table as a table structure
 ------------------------------------------------------------------------------
-local selectAll = function(tableName)
+local selectAll = function( tableName, params )
   local result = {}
-  for row in _G.db:nrows("SELECT * FROM " .. tableName) do
+  local s = sql.generateSelect({
+    tableName = tableName,
+    order = params.order,
+    limit = params.limit
+  })
+  for row in _G.db:nrows(s) do
     result[#result+1] = row
   end
   return result
@@ -41,9 +47,15 @@ M.selectAll = selectAll
 -- Return contents of an SQLite table filtered by a WHERE query
 -- Return value is a table structure
 ------------------------------------------------------------------------------
-local selectWhere = function(tableName, whereClause)
+local selectWhere = function(tableName, params )
   local result = {}
-  for row in _G.db:nrows("SELECT * FROM " .. tableName .. " WHERE " .. whereClause) do
+  local s = sql.generateSelect({
+    tableName = tableName,
+    where = params.where,
+    order = params.order,
+    limit = params.limit
+  })
+  for row in _G.db:nrows(s) do
     result[#result+1] = row
   end
   return result
@@ -56,10 +68,12 @@ M.selectWhere = selectWhere
 ------------------------------------------------------------------------------
 local selectOne = function(tableName, key, keyValue)
   local result = {}
-  local sql = "SELECT * FROM " .. tableName ..
-		" WHERE " .. key .. " = " .. keyValue ..
-		" LIMIT 1"
-  for row in _G.db:nrows(sql) do
+  local s = sql.generateSelect({
+    tableName = tableName,
+    where = key .. " = " .. keyValue,
+    limit = 1
+  })
+  for row in _G.db:nrows(s) do
     result[1] = row
     break
   end
@@ -152,6 +166,16 @@ end
 M.createOrUpdate = createOrUpdate
 
 ------------------------------------------------------------------------------
+-- Updates all rows in the given table
+------------------------------------------------------------------------------
+local updateAll = function( tablename, updateSql )
+  local str = "UPDATE " .. tablename ..
+    " SET " .. updateSql
+  db:exec( str )
+end
+M.updateAll = updateAll
+
+------------------------------------------------------------------------------
 -- Updates one column for one row in a given table
 ------------------------------------------------------------------------------
 local updateAttribute = function( tablename, filter, columnName, columnValue )
@@ -189,6 +213,18 @@ local updateAttributes = function( tablename, filter, columns, columnValues )
   )
 end
 M.updateAttributes = updateAttributes
+
+------------------------------------------------------------------------------
+-- Updates all rows that match the filter in the given table
+------------------------------------------------------------------------------
+local updateWhere = function( tablename, updateSql, filter )
+  local str = "UPDATE " .. tablename ..
+    " SET " .. updateSql ..
+    " WHERE " .. filter
+  db:exec( str )
+end
+M.updateWhere = updateWhere
+
 
 return M
 
