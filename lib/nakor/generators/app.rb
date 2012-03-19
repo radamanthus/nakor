@@ -32,6 +32,7 @@ module Nakor
         radlib.lua
         README
         settings.lua
+        sql.lua
         string_ext.lua
         table_ext.lua
         time_ext.lua
