@@ -20,6 +20,7 @@ module Nakor
         active_record.lua
         build.settings
         config.lua
+        geometry.lua
         help.lua
         init_buttons.lua
         io_ext.lua
@@ -49,23 +50,36 @@ module Nakor
       end
 
       def create_group
-        empty_directory(app_name)
+        # Create the top-level app directory
+        empty_directory app_name
+
+        # Create the subdirectories
+        create_subdirectory app_name
+        create_subdirectory "server"
+        create_subdirectory "assets"
+        create_subdirectory "doc"
       end
 
       def copy_source_files
         TEMPLATE_FILES.each do |template_file|
-          template template_file, "#{app_name}/#{template_file}"
+          template template_file, "#{app_name}/#{app_name}/#{template_file}"
         end
       end
 
       def copy_asset_files
         ASSET_FILES.each do |asset_file|
-          copy_file asset_file, "#{app_name}/#{asset_file}"
+          copy_file asset_file, "#{app_name}/#{app_name}/#{asset_file}"
         end
       end
 
       def done
         puts "Successfully generated '#{app_name}'"
+      end
+
+      private
+
+      def create_subdirectory(subdir)
+        empty_directory(File.join app_name, subdir)
       end
     end
   end
