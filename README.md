@@ -19,6 +19,13 @@ This will create the awesome_app directory in the current directory. To run it i
 
     /Applications/CoronaSDK/simulator awesome_app
 
+# Development
+
+To release a new version:
+
+    gem bump
+    gem release
+
 # Credits
 
 This code is MIT licensed, see http://developer.coronalabs.com/code/license
